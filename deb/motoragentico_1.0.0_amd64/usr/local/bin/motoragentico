@@ -1,0 +1,14 @@
+#!/bin/bash
+INSTALL_DIR="/usr/share/motoragentico"
+UV_BIN="uv"
+if ! command -v uv &> /dev/null; then
+    UV_BIN="$HOME/.local/bin/uv"
+fi
+
+echo "🧠 Iniciando Motor Agéntico..."
+echo "   Abrí http://localhost:8501 en tu browser"
+echo "   Ctrl+C para detener"
+echo ""
+
+cd "$INSTALL_DIR"
+exec $UV_BIN run streamlit run app.py --server.headless true "$@"

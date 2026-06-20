@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+INSTALL_DIR="/usr/share/motoragentico"
+
+echo "⚙️  Configurando Motor Agéntico..."
+
+# Instalar uv si no está disponible
+if ! command -v uv &> /dev/null && ! [ -f "$HOME/.local/bin/uv" ]; then
+    echo "📦 Instalando uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
+
+UV_BIN="uv"
+if ! command -v uv &> /dev/null; then
+    UV_BIN="$HOME/.local/bin/uv"
+fi
+
+# Instalar dependencias Python en el directorio de instalación
+echo "📦 Instalando dependencias Python..."
+cd "$INSTALL_DIR"
+$UV_BIN sync --quiet 2>/dev/null || $UV_BIN add streamlit plotly pandas --quiet
+
+echo ""
+echo "✅ Motor Agéntico instalado correctamente."
+echo ""
+echo "   Para correrlo:  motoragentico"
+echo "   Se abre en:     http://localhost:8501"
+echo ""
